@@ -12,6 +12,26 @@
  
   </div>
   <div v-else>
+     <v-row >
+      <v-col>
+        <h1>Public API </h1>
+      </v-col>
+     <v-col 
+        align-end
+        sm="3"
+        class="mt-5"
+        >
+       
+        <v-select
+          :items="sorts"
+            v-model="Sort"
+          label="Sort"
+         dark
+         v-on:change="showService"
+        ></v-select>  
+        
+        </v-col>
+        </v-row>
   <v-card
     class="mx-auto mt-5 "
     max-width="800"
@@ -75,21 +95,6 @@
       
     </v-expansion-panels>
     
-       <!-- <v-fab-transition>
-        
-                <v-btn
-                  color="pink"
-                  fab
-                  dark
-                  small
-                  absolute
-                  bottom
-                  right
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-             
-              </v-fab-transition> -->
               
     </v-card-actions>
   </v-card>
@@ -109,12 +114,42 @@
 export default {
  data: () => ({
     //
-   page : 1
+   page : 1,
+    Sort: -1
+    ,
+      sorts: [
+        {value: -1 , text:'Latest'},
+        {value: 1 , text:'Oldest'}
+      ]
   }),
   mounted(){
-      this.$store.dispatch('getService')
+     let params = {
+            page : this.page,
+            sort : this.Sort
+          }
+      this.$store.dispatch('getService',params)
 
-  } 
+  } ,
+  methods:{
+      showService(){
+          let params = {
+            page : this.page,
+            sort : this.Sort
+          }
+        this.$store.dispatch('getService', params)
+      }
+  },
+  watch: {
+    page: function(val) {
+      let params = {
+        page: this.page,
+        sort: this.Sort,
+      };
+      if (val > 0) {
+        this.$store.dispatch("getService", params);
+      }
+    },
+  },
       
 }
 </script>

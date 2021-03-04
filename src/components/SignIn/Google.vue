@@ -55,8 +55,8 @@ export default {
     },
     // only needed if you want to render the button with the google ui
     renderParams: {
-      width: 250,
-      height: 50,
+      width: 230,
+      height: 40,
       longtitle: true,
     },
   }),
@@ -100,8 +100,14 @@ export default {
 </script>
 
 <style>
+
+.v-toolbar__content .v-toolbar__items #profile{
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
 @media only screen and (max-width: 800px){
-  #profile{
+.v-toolbar__content .v-toolbar__items  #profile{
     display: none;
   }
 }

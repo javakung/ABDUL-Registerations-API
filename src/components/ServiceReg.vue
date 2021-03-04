@@ -1,6 +1,6 @@
 <template>
 
-  <form>
+  <form >
     <v-text-field
       v-model="name"
       :error-messages="nameErrors"
@@ -11,13 +11,20 @@
       @blur="$v.name.$touch()"
     ></v-text-field>
     <v-text-field
-      v-model="email"
+      v-model="endpoint"
       :error-messages="emailErrors"
       label="Endpoint"
       required
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
+      @input="$v.endpoint.$touch()"
+      @blur="$v.endpoint.$touch()"
     ></v-text-field>
+      <v-textarea
+      v-model="descriptions"
+      clearable
+      clear-icon="mdi-close-circle"
+      label="Description"
+
+    ></v-textarea>
      <v-row align="center">
  <v-col
         class="d-flex"
@@ -25,15 +32,15 @@
         sm="6"
       >
      <v-select
-     v-model="select"
+     v-model="permission"
      :error-messages="selectErrors"
           :items="items"
           label="Permission"
           dense
           outlined
             required
-      @change="$v.select.$touch()"
-      @blur="$v.select.$touch()"
+      @change="$v.permission.$touch()"
+      @blur="$v.permission.$touch()"
 
         ></v-select>
  </v-col>
@@ -54,14 +61,81 @@
         ></v-select>
   </v-col>
      </v-row>
-   
-
+     <v-expansion-panels accordion >
+      <v-expansion-panel  class="mb-5">
+        <v-expansion-panel-header>Parameter Set</v-expansion-panel-header>
+        <v-expansion-panel-content>
+        
+              <v-container  v-for="(input, k) in inputs" :key="k">
+            <v-row  class="ma-3">
+        <v-col
+          cols="12"
+          sm="6"
+          md="3"
+        >
+          <v-text-field
+            v-model="input.paramN"
+            label="Parameter Name"
+          ></v-text-field>
+        </v-col>
+             <v-col cols="3">
+        <v-select
+          v-model="input.paramT"
+          :items="Titems"
+          menu-props="auto"
+          label="Type"
+          hide-details
+  
+          single-line
+        ></v-select>
+      </v-col>
+             <v-col
+        cols="12"
+        sm="6"
+      >
+        <v-textarea
+          v-model="input.desc"
+          append-outer-icon="mdi-comment"
+          class="mx-2"
+          label="Description"
+          rows="1"
+        ></v-textarea>
+      </v-col>
+      
+      
+     
+            <v-row>
+              <v-col align="end">
+              <v-btn 
+              color="error"
+                @click="remove(k)"
+                v-show="k || (!k && inputs.length > 1)"
+                >Remove</v-btn
+              >
+          
+            
+              <v-btn 
+                 color="teal"
+                 dark
+                @click="add(k)"
+                v-show="k == inputs.length - 1"
+                >Add</v-btn
+              >
+</v-col>
+                 </v-row>
+        
+               </v-row>
+           </v-container>
+      
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+     </v-expansion-panels>
     <v-btn
       class="mr-4"
        elevation="8"
   raised
   color="primary"
-      @click="submit"
+      @click="addService"
     >
       submit
     </v-btn>
@@ -85,26 +159,50 @@
 
     validations: {
       name: { required, maxLength: maxLength(20) },
-      email: { required, url },
-      select: { required },
+      endpoint: { required, url },
+      permission: { required },
       methods: { required }
     },
 
     data: () => ({
       name: '',
-      email: '',
-      select: null,
+      endpoint: '',
+      permission: null,
       items: [
         'Public',
         'Private',
 
       ],
-      checkbox: false,
+      
       methods: null,
       method: [
           'GET',
           'POST'
-      ]
+      ],
+      inputs: [
+        {
+          paramN: "",
+          paramT: "Int",
+          desc: "",
+        },
+      ],
+      Titems: [
+        {
+          value: "Int",
+          text: "Int",
+        },
+        {
+          value: "Str",
+          text: "Str",
+        },
+        {
+          value: "Any",
+          text: "Any",
+        },
+      ],
+      descriptions: '',
+      page: 1,
+      Filter: -1,
     }),
 
     computed: {
@@ -116,8 +214,8 @@
       },
       selectErrors () {
         const errors = []
-        if (!this.$v.select.$dirty) return errors
-        !this.$v.select.required && errors.push('Permission is required')
+        if (!this.$v.permission.$dirty) return errors
+        !this.$v.permission.required && errors.push('Permission is required')
         return errors
       },
       nameErrors () {
@@ -129,9 +227,9 @@
       },
       emailErrors () {
         const errors = []
-        if (!this.$v.email.$dirty) return errors
-        !this.$v.email.url && errors.push('Must be valid url')
-        !this.$v.email.required && errors.push('Url is required')
+        if (!this.$v.endpoint.$dirty) return errors
+        !this.$v.endpoint.url && errors.push('Must be valid url')
+        !this.$v.endpoint.required && errors.push('Url is required')
         return errors
       },
     },
@@ -143,10 +241,57 @@
       clear () {
         this.$v.$reset()
         this.name = ''
-        this.email = ''
-        this.select = null
+        this.endpoint = ''
+        this.permission = null
         this.methods = null
+        this.descriptions = ''
+       
+
       },
+        add() {
+      this.inputs.push({
+        paramN: "",
+        paramT: "",
+      });
+      // console.log(this.inputs);
+    },
+    remove(index) {
+      this.inputs.splice(index, 1);
+    },
+    addService() {
+    
+      this.$v.$touch()
+      
+     
+      let params = {
+        page: this.page,
+        sort: this.Filter,
+        user_id: this.$store.state.user.yo
+      };
+       
+      let payload = {
+        sname: this.name,
+        endpoint: this.endpoint,
+        desc: this.descriptions,
+        permiss: this.permission,
+        user: this.$store.state.user.yo,
+        methods: this.methods,
+        parameter: this.inputs,
+      };
+      this.$store
+        .dispatch("postService", payload)
+        .then(
+          setTimeout(() => {
+            this.$store.dispatch("serviceUser",params);
+            this.show = false
+          }, 3000)
+        ).then(
+          setTimeout(() => {
+            this.clear()
+          }, 3000)
+        );
+    },
+    
     },
   }
 </script>

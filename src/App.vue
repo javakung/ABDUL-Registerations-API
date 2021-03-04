@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="deep-purple" dark>
-      <v-toolbar-title><h2>ABDUL Registerations API</h2></v-toolbar-title>
+      <v-toolbar-title><p>ABDUL Registerations API</p></v-toolbar-title>
 
       <v-spacer></v-spacer>
       
@@ -16,6 +16,7 @@
 
     <v-navigation-drawer v-model="drawer" fixed temporary right>
       <v-list nav shaped dense>
+      
         <v-list-item-group
           v-model="group"
           active-class="deep-purple--text text--accent-4"
@@ -26,19 +27,28 @@
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/MyAPI">
+          <v-list-item to="/MyAPI" v-if="$store.state.user.ff">
             <v-list-item-icon>
               <v-icon>mdi-format-list-bulleted-square</v-icon>
             </v-list-item-icon>
             <v-list-item-title>My API</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/about">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Account</v-list-item-title>
-          </v-list-item>
+         
+       
+            <v-divider></v-divider>
+            <v-container>
+            
+             <google></google>
+           
+             </v-container>
+            
+           
         </v-list-item-group>
+  
+       
+     
+      
+      
       </v-list>
     </v-navigation-drawer>
     <v-main>
@@ -69,4 +79,19 @@ export default {
   font-family: "Roboto", sans-serif !important;
 }
 
+.v-application p {
+    margin-bottom: 0; 
+    font-size: 25px;
+    font-weight:600
+}
+
+@media only screen and (min-width: 800px){
+.v-item-group .container{
+    display: none;
+    align-items: center;
+
+  }
+
+
+}
 </style>

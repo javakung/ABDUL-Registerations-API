@@ -1,7 +1,7 @@
 <template>
 
   <div class="MyApi">
-     <v-parallax src="http://www.100hdwallpapers.com/wallpapers/1920x1080/comet_minimal-hd_wallpapers.jpg"> 
+       <v-parallax src="https://i.pinimg.com/originals/17/45/a7/1745a77c77a448800b8066fee54742c4.jpg" alt="" height="1200"> 
     <v-container >
        <v-card
           elevation="24"
@@ -15,24 +15,25 @@
     </v-container>
        </v-card>
     </v-container>
-     </v-parallax>
-     <v-container>
-     <h1>My API</h1>
-     </v-container>
- <servicelist></servicelist>
+   </v-parallax>
+   
+   
+      <service-user></service-user>
+   
   </div>
 
 </template>
 
 <script>
-import Servicelist from '../components/Servicelist.vue'
+
 
 import ServiceReg from '../components/ServiceReg.vue'
+import ServiceUser from '../components/ServiceUser.vue'
 // @ is an alias to /src
 
 
 export default {
-  components: { ServiceReg, Servicelist},
+  components: { ServiceReg, ServiceUser},
   
  
 }
