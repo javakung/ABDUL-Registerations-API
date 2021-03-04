@@ -1,6 +1,6 @@
 <template>
   <v-container>
-  <div class="text-center" v-if="$store.state.loading">
+  <div class="text-center" v-if="$store.state.Publicloading">
     
       <v-progress-circular
       
@@ -132,6 +132,7 @@ export default {
   } ,
   methods:{
       showService(){
+    
           let params = {
             page : this.page,
             sort : this.Sort

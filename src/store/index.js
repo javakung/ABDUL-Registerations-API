@@ -11,6 +11,7 @@ export default new Vuex.Store({
     user: [],
     loading: false,
     Myloading: false,
+    Publicloading: false,
     statusAdd: [],
     serviceUser: [],
     deleteRequest: {},
@@ -46,11 +47,13 @@ export default new Vuex.Store({
           this.state.loading = false;
         });
     },
-    getService({ commit },params) {
+    getService({ commit }, params) {
+      this.state.Publicloading = true
       axios
         .get("https://restfulapipython.herokuapp.com/v1/APIs/", { params })
         .then((res) => {
           commit("SET_SERVICE", res.data);
+          this.state.Publicloading = false;
         });
     },
     postService({ commit }, payload) {
