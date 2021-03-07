@@ -1,19 +1,18 @@
 <template>
    <div class="home">
      
-  <v-parallax src="@/assets/What Space Really Looks Like.jpg" alt="" height="100%">
+  
    
   
        
        
-     <v-container>
-     <servicelist></servicelist>
-     </v-container>
+   
+     <servicelist :length="($store.state.lengthPageP / 10) + 1"></servicelist>
+   
   
 
- </v-parallax>
-   
-    
+
+
   </div>
 </template>
 

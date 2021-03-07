@@ -14,7 +14,7 @@
       <v-app-bar-nav-icon @click="drawer = true" right></v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" fixed temporary right>
+    <v-navigation-drawer v-model="drawer" fixed temporary  right>
       <v-list nav shaped dense>
       
         <v-list-item-group
@@ -33,7 +33,12 @@
             </v-list-item-icon>
             <v-list-item-title>My API</v-list-item-title>
           </v-list-item>
-         
+          <v-list-item to="/Manage" v-if="$store.state.user.ar == `superuser`">
+            <v-list-item-icon>
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Manage API</v-list-item-title>
+          </v-list-item>
        
             <v-divider></v-divider>
             <v-container>

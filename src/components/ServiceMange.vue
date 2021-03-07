@@ -1,24 +1,24 @@
 <template>
-  <v-container>
-   
-    
+  <div>
+    <v-parallax src="@/assets/Space3.jpg" alt="" height="100"> 
       <v-container>
         <v-row>
-          <v-col>
-            <h1>My API</h1>
+          <v-col class="mt-5">
+            <h1>Manage API</h1>
           </v-col>
           <v-col align-end sm="3" class="mt-5">
             <v-select
               :items="sorts"
               v-model="Filter"
               label="Sort"
-              light
+              dark
               v-on:change="showService"
             ></v-select>
           </v-col>
         </v-row>
       </v-container>
-       <div class="text-center" v-if="$store.state.Myloading">
+    </v-parallax>
+  <div class="text-center mt-15" v-if="loading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -28,11 +28,12 @@
     </div>
     <div v-else>
       <v-card
-        class="mx-auto mt-5 "
+    
+        class=" mx-auto mt-5"
         max-width="800"
         outlined
         elevation="12"
-        v-for="(service,index) in $store.state.serviceUser[0]"
+        v-for="(service,index) in $store.state.serviceSuper[0]"
         :key="service.id"
       >
         <v-list-item three-line>
@@ -64,7 +65,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-card-actions>
-          <v-expansion-panels accordion>
+          <v-expansion-panels accordion >
             <v-expansion-panel class="mb-5">
               <v-expansion-panel-header color="deep-purple" id="DeUser"
                 >Details</v-expansion-panel-header
@@ -107,8 +108,8 @@
             </v-expansion-panel>
           </v-expansion-panels>
 
-          <v-fab-transition>
-             <v-dialog
+          <v-fab-transition >
+  <v-dialog
       v-model="dialog[index]"   :retain-focus="false"
       
       max-width="290"
@@ -155,19 +156,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+            
           </v-fab-transition>
         </v-card-actions>
       </v-card>
-
+   
+ 
+      
       <v-pagination
-        class="mt-5"
+        class="mt-5 mb-5"
         v-model="page"
-        :length="($store.state.lengthPageU / 10) + 1"
+        :length="($store.state.lengthpage / 10)+1"
         :total-visible="10"
         circle
       ></v-pagination>
+      
     </div>
-  </v-container>
+    
+  </div>
 </template>
 
 <script>
@@ -185,20 +191,27 @@ export default {
       { value: "Str", text: "Str" },
       { value: "Any", text: "Any" },
     ],
-    dialog: {}
+     dialog: {},
+     loading: false,
   }),
   mounted() {
     let params = {
       page: this.page,
       user_id: this.$store.state.user.yo,
       sort: this.Filter,
+      status: this.$store.state.user.ar
     };
     if (this.$store.state.user.yo) {
-      this.$store.dispatch("getServiceUser", params);
+      this.$store.dispatch("serviceSuper", params).then(
+        this.loading = true,
+        setTimeout(() => {
+          this.loading = false
+        }, 3000)
+      )
     } else {
       setTimeout(() => {
-        this.$store.dispatch("getServiceUser", params);
-        this.show = false;
+        this.$store.dispatch("serviceSuper", params);
+       this.loading = false
       }, 1000);
     }
   },
@@ -208,26 +221,38 @@ export default {
         sort: this.Filter,
         page: this.page,
         user_id: this.$store.state.user.yo,
+        status: this.$store.state.user.ar
       };
       let payload = {
         sid: service.ao,
         u: this.$store.state.user.yo,
+        status: this.$store.state.user.ar
       };
 
-      this.$store.dispatch("deleteService", payload).then(
+      this.$store.dispatch("serviceDeleteS", payload).then(
+          this.loading = true,
         setTimeout(() => {
-          this.$store.dispatch("getServiceUser", params);
-          this.show = false;
+          this.$store.dispatch("serviceSuper", params).then(
+             setTimeout(() => {
+          this.loading = false
+        }, 2500)
+          )
         }, 3000)
-      );
+      )
     },
     showService() {
       let params = {
         sort: this.Filter,
         page: this.page,
         user_id: this.$store.state.user.yo,
+        status: this.$store.state.user.ar
       };
-      this.$store.dispatch("getServiceUser", params);
+      this.$store.dispatch("serviceSuper", params).then(
+        this.loading = true,
+        setTimeout(() => {
+          this.loading = false
+        }, 3000)
+      )
     },
     update(service) {
       let payload = {
@@ -239,11 +264,12 @@ export default {
         desc: service.sy,
         methods: service.ny,
         parameter: service.oa,
+        status: this.$store.state.user.ar
       };
-      this.$store.dispatch("updateService", payload);
+      this.$store.dispatch("serviceUpdateS", payload);
     },
     checkurl(service) {
-      this.busy = true;
+
 
       let payload = {
         url: service.wo,
@@ -252,7 +278,7 @@ export default {
 
       this.$store.dispatch("Uralvalidate", payload).then(
         this.setTimeout(() => {
-          this.busy = false;
+      
         })
       );
     },
@@ -263,9 +289,15 @@ export default {
         sort: this.Filter,
         page: this.page,
         user_id: this.$store.state.user.yo,
+        status: this.$store.state.user.ar
       };
       if (val > 0) {
-        this.$store.dispatch("getServiceUser", params);
+        this.$store.dispatch("serviceSuper", params).then(
+          this.loading = true,
+          setTimeout(() => {
+            this.loading = false
+          }, 3000)
+        )
       }
     },
   },
@@ -275,13 +307,24 @@ export default {
 <style>
 #DeUser {
   color: white;
+
 }
 
 .v-btn--fab.v-size--small.v-btn--absolute.v-btn--bottom {
   bottom: 45%;
   right: -20px;
+
 }
+/* .v-card {
+    position: relative;
+}
+.v-expansion-panels{
+    position: absolute;
+    bottom: 0;
+} */
+
 .v-pagination__item.v-pagination__item{
   outline: none;
 }
+
 </style>

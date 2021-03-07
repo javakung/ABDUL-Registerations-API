@@ -1,5 +1,5 @@
 <template>
-
+ 
   <form >
     <v-text-field
       v-model="name"
@@ -63,10 +63,11 @@
      </v-row>
      <v-expansion-panels accordion >
       <v-expansion-panel  class="mb-5">
-        <v-expansion-panel-header>Parameter Set</v-expansion-panel-header>
+        <v-expansion-panel-header color="deep-purple lighten-2
+">Parameter Set</v-expansion-panel-header>
         <v-expansion-panel-content>
-        
-              <v-container  v-for="(input, k) in inputs" :key="k">
+ 
+              <div  v-for="(input, k) in inputs" :key="k">
             <v-row  class="ma-3">
         <v-col
           cols="12"
@@ -125,8 +126,8 @@
                  </v-row>
         
                </v-row>
-           </v-container>
-      
+           </div>
+  
         </v-expansion-panel-content>
       </v-expansion-panel>
      </v-expansion-panels>
@@ -221,7 +222,7 @@
       nameErrors () {
         const errors = []
         if (!this.$v.name.$dirty) return errors
-        !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+        !this.$v.name.maxLength && errors.push('Name must be at most 20 characters long')
         !this.$v.name.required && errors.push('Name is required.')
         return errors
       },
@@ -260,9 +261,8 @@
     },
     addService() {
     
-      this.$v.$touch()
-      
-     
+     this.$v.$touch()
+  
       let params = {
         page: this.page,
         sort: this.Filter,
@@ -281,15 +281,17 @@
       this.$store
         .dispatch("postService", payload)
         .then(
+          this.$store.state.Myloading = true,
           setTimeout(() => {
             this.$store.dispatch("serviceUser",params);
-            this.show = false
+            this.$store.state.Myloading = false
           }, 3000)
         ).then(
           setTimeout(() => {
             this.clear()
           }, 3000)
         );
+   
     },
     
     },

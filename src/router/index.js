@@ -14,6 +14,11 @@ const routes = [
     path: '/MyAPI',
     name: 'MyAPI',
     component: () => import('../views/MyAPI.vue')
+  },
+  {
+    path: '/Manage',
+    name: 'SuperPage',
+    component:() => import('../views/SuperUser.vue')
   }
   
 ]

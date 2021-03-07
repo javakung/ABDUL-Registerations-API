@@ -1,8 +1,10 @@
 <template>
 
   <div class="MyApi">
-       <v-parallax src="https://i.pinimg.com/originals/17/45/a7/1745a77c77a448800b8066fee54742c4.jpg" alt="" height="1200"> 
+      <v-parallax src="@/assets/Space1.jpg" alt="" height="1200"> 
+        
     <v-container >
+     
        <v-card
           elevation="24"
           >
@@ -15,8 +17,7 @@
     </v-container>
        </v-card>
     </v-container>
-   </v-parallax>
-   
+      </v-parallax>
    
       <service-user></service-user>
    

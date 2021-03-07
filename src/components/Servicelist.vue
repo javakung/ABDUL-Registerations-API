@@ -1,19 +1,10 @@
 <template>
-  <v-container>
-  <div class="text-center" v-if="$store.state.Publicloading">
-    
-      <v-progress-circular
-      
-      :size="70"
-      :width="7"
-      color="purple"
-      indeterminate
-    ></v-progress-circular>
- 
-  </div>
-  <div v-else>
+  <div>
+    <v-parallax src="@/assets/Space4.jpg" alt=""  height="100">
+    <v-container>
      <v-row >
-      <v-col>
+       
+      <v-col class="mt-5">
         <h1>Public API </h1>
       </v-col>
      <v-col 
@@ -31,7 +22,22 @@
         ></v-select>  
         
         </v-col>
+     
         </v-row>
+        </v-container>
+    </v-parallax>
+         <div class="text-center mt-15" v-if="$store.state.Publicloading">
+    
+      <v-progress-circular
+      
+      :size="70"
+      :width="7"
+      color="purple"
+      indeterminate
+    ></v-progress-circular>
+ 
+  </div>
+   <div v-else>
   <v-card
     class="mx-auto mt-5 "
     max-width="800"
@@ -58,7 +64,7 @@
       
         <v-expansion-panels accordion >
       <v-expansion-panel  class="mb-5">
-        <v-expansion-panel-header>Details</v-expansion-panel-header>
+        <v-expansion-panel-header id="Pub1" color="purple darken-3">Details</v-expansion-panel-header>
         <v-expansion-panel-content>
            <v-simple-table
     fixed-header
@@ -102,16 +108,19 @@
   <v-pagination
   class="mt-5"
       v-model="page"
-      :length=" ($store.state.servicelist[1].total / 10)+1"
+      :length="length"
       :total-visible="10"
       circle
     ></v-pagination>
   </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
 export default {
+  props:{
+    length: Number
+  } ,
  data: () => ({
     //
    page : 1,
@@ -120,7 +129,8 @@ export default {
       sorts: [
         {value: -1 , text:'Latest'},
         {value: 1 , text:'Oldest'}
-      ]
+      ],
+  
   }),
   mounted(){
      let params = {
@@ -156,5 +166,10 @@ export default {
 </script>
 
 <style>
-
+#Pub1{
+  color: white;
+}
+.v-pagination__item.v-pagination__item{
+  outline: none;
+}
 </style>

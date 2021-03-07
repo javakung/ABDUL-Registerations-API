@@ -15,7 +15,13 @@ export default new Vuex.Store({
     statusAdd: [],
     serviceUser: [],
     deleteRequest: {},
-    updateRequest: {}
+    updateRequest: {},
+    serviceSuper: [],
+    lengthpage: [],
+    deleteSuper: {},
+    updateSuper: {},
+    lengthPageP: [],
+    lengthPageU: []
   },
   mutations: {
     SET_USER(state, Login) {
@@ -25,41 +31,65 @@ export default new Vuex.Store({
       state.servicelist = listitems;
     },
     SET_ADDSTA(state, Addservice) {
-      state.statusAdd = Addservice
+      state.statusAdd = Addservice;
     },
     SET_SERVICEUSER(state, listuser) {
-      state.serviceUser = listuser
+      state.serviceUser = listuser;
     },
     SET_DELETEREQUEST(state, request) {
-      state.deleteRequest = request
+      state.deleteRequest = request;
     },
     SET_UPDATEREQUEST(state, request) {
-      state.updateRequest = request
+      state.updateRequest = request;
+    },
+    SET_SERVICESUPER(state, listsuper) {
+      state.serviceSuper = listsuper;
+    },
+    SET_LENGTHPAGE(state, number) {
+      state.lengthpage = number;
+    },
+    SET_LENGTHPAGEP(state, number) {
+      state.lengthPageP = number
+    },
+    SET_LENGTHPAGEU(state, number) {
+      state.lengthPageU = number
+    },
+    SET_DELETESUPER(state, request) {
+      state.deleteSuper = request
+    },
+    SET_UPDATESUPER(state, request) {
+      state.updateSuper = request
     }
   },
   actions: {
     getLogin({ commit }, payload) {
       this.state.loading = true;
       axios
-        .post("https://restfulapipython.herokuapp.com/v1/APIs/login", payload)
+        .post(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/login",
+          payload
+        )
         .then((res) => {
           commit("SET_USER", res.data[0].data);
           this.state.loading = false;
         });
     },
     getService({ commit }, params) {
-      this.state.Publicloading = true
+      this.state.Publicloading = true;
       axios
-        .get("https://restfulapipython.herokuapp.com/v1/APIs/", { params })
+        .get("https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/", {
+          params,
+        })
         .then((res) => {
           commit("SET_SERVICE", res.data);
+          commit("SET_LENGTHPAGEP", res.data[1].total);
           this.state.Publicloading = false;
         });
     },
     postService({ commit }, payload) {
       axios
         .post(
-          "https://restfulapipython.herokuapp.com/v1/APIs/service/add",
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/service/add",
           payload
         )
         .then((res) => {
@@ -68,36 +98,79 @@ export default new Vuex.Store({
         });
     },
     getServiceUser({ commit }, params) {
-      this.state.Myloading = true
+      this.state.Myloading = true;
       axios
-        .get("https://restfulapipython.herokuapp.com/v1/APIs/user", {params})
+        .get("https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/user", {
+          params,
+        })
         .then((res) => {
           commit("SET_SERVICEUSER", res.data);
-          this.state.Myloading = false
+          commit("SET_LENGTHPAGEU",res.data[1].total);
+          this.state.Myloading = false;
         });
     },
     deleteService({ commit }, payload) {
       commit("SET_DELETEREQUEST", payload);
-      axios.delete(
-        "https://restfulapipython.herokuapp.com/v1/APIs/service/delete"
-        ,{
-          data: {
-            sid: this.state.deleteRequest.sid,
-            u: this.state.deleteRequest.u
-        }}
-      ).then(res => {
-        console.log(res.data)
-      }
-      )
+      axios
+        .delete(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/service/delete",
+          {
+            data: {
+              sid: this.state.deleteRequest.sid,
+              u: this.state.deleteRequest.u,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+        });
     },
     updateService({ commit }, payload) {
       commit("SET_UPDATEREQUEST", payload);
+      axios
+        .patch(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/service/update",
+          this.state.updateRequest
+        )
+        .then((res) => {
+          console.log(res.data);
+        });
+    },
+    serviceSuper({ commit }, params) {
+
+      axios
+        .get(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins",
+          { params }
+        )
+        .then((res) => {
+          commit("SET_SERVICESUPER", res.data[0]);
+          var fetch = res.data[0];
+          commit("SET_LENGTHPAGE", fetch[1].total);
+     
+        });
+    },
+    serviceDeleteS({ commit }, payload) {
+      commit("SET_DELETESUPER", payload)
+      axios.delete(
+        "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins/service/delete",
+        {
+          data: {
+            sid: this.state.deleteSuper.sid,
+            u: this.state.deleteSuper.u,
+            status: this.state.deleteSuper.status
+          },
+        }
+      );
+    },
+    serviceUpdateS({ commit }, payload) {
+      commit("SET_UPDATESUPER",payload);
       axios.patch(
-        "https://restfulapipython.herokuapp.com/v1/APIs/service/update",
-        this.state.updateRequest
-      ).then(res => {
-        console.log(res.data)
-      })
+        "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins/service/update"
+        , this.state.updateSuper).then(res =>{
+                                               console.log(res.data);
+                                             }
+      )
     }
   },
   modules: {},
