@@ -72,7 +72,7 @@
             :loading="loading4"
             :disabled="loading4"
             color="info"
-            v-on:click="checkConnection(service), (loader = 'loading4')"
+            v-on:click="checkConnection(service), (loader[index] = 'loading4')"
           >
             Test Connection
             <template v-slot:loader>
@@ -194,8 +194,9 @@ export default {
         sid: service.ao,
       };
       this.$store.dispatch("urlValidate", payload).then(
-        (this.loading4 = true),
+        this.loading4= true,
         setTimeout(() => {
+          
           this.loading4 = false;
         }, 1000)
       );
@@ -211,13 +212,13 @@ export default {
         this.$store.dispatch("getService", params);
       }
     },
-    loader() {
-      const l = this.loader;
+    loader(index) {
+      const l = this.loader[index];
       this[l] = !this[l];
 
       setTimeout(() => (this[l] = false), 1500);
 
-      this.loader = null;
+      this.loader[index] = null;
     },
   },
 };
