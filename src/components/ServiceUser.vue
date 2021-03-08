@@ -304,7 +304,7 @@ export default {
         (this.loading4 = true),
         setTimeout(() => {
           this.loading4 = false;
-        }, 2500)
+        }, 1000)
       );
     },
   },
