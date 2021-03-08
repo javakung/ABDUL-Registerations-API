@@ -131,7 +131,7 @@
                   :key="`paramName-${index}`"
                 >
                   <v-row>
-                    <v-col cols="12" sm="6" md="3">
+                    <v-col cols="7" sm="6" md="3">
                       <v-text-field
                         v-model="parameter.om"
                         label="Parameter Name"
@@ -139,7 +139,7 @@
                         v-on:blur="service"
                       ></v-text-field>
                     </v-col>
-                    <v-col sm="3">
+                    <v-col cols="3" sm="3">
                       <v-select
                         v-model="parameter.oy"
                         :items="paramType"
@@ -148,7 +148,7 @@
                         v-on:blur="update(service)"
                       ></v-select>
                     </v-col>
-                    <v-col cols="12" md="6">
+                    <v-col cols="10" md="6">
                       <v-textarea
                         outlined
                         v-model="parameter.sv"

@@ -46,7 +46,7 @@
 
 <script>
 import GoogleLogin from "vue-google-login";
-import Vue from "vue";
+
 export default {
   data: () => ({
     //
@@ -90,12 +90,7 @@ export default {
       console.log(err);
     },
   },
-  mounted() {
-    Vue.GoogleAuth.then((auth2) => {
-      auth2.isSignedIn.get();
-      auth2.currentUser.get();
-    });
-  },
+ 
 };
 </script>
 

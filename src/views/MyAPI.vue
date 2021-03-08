@@ -1,7 +1,7 @@
 <template>
 
   <div class="MyApi">
-      <v-parallax src="@/assets/Space1.jpg" alt="" height="1200"> 
+      <v-parallax src="@/assets/Space1.jpg" alt="" height="100%"> 
         
     <v-container >
      

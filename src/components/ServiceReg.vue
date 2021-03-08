@@ -60,13 +60,13 @@
         <v-expansion-panel-content>
           <div v-for="(input, k) in inputs" :key="k">
             <v-row class="ma-3">
-              <v-col cols="12" sm="6" md="3">
+              <v-col cols="7" sm="6" md="3">
                 <v-text-field
                   v-model="input.paramN"
                   label="Parameter Name"
                 ></v-text-field>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="3" md="3">
                 <v-select
                   v-model="input.paramT"
                   :items="Titems"
@@ -76,7 +76,7 @@
                   single-line
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col cols="10" sm="6">
                 <v-textarea
                   v-model="input.desc"
                   append-outer-icon="mdi-comment"
