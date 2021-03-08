@@ -130,13 +130,18 @@ export default new Vuex.Store({
     },
     updateService({ commit }, payload) {
       commit("SET_UPDATEREQUEST", payload);
+      this.state.Myloading = true
       axios
         .patch(
           "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/service/update",
           this.state.updateRequest
         )
         .then((res) => {
-          console.log(res.data);
+          console.log(res.data)
+          setTimeout(() => {
+          this.state.Myloading = false;  
+          }, 3000);
+          
         });
     },
     serviceSuper({ commit }, params) {

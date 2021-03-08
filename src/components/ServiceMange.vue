@@ -4,7 +4,7 @@
       <v-container>
         <v-row>
           <v-col class="mt-5">
-            <h1>Manage API</h1>
+            <h1>ManageAPI</h1>
           </v-col>
           <v-col align-end sm="3" class="mt-5">
             <v-select
@@ -28,9 +28,10 @@
     </div>
     <div v-else>
       <v-card
-        class=" mx-auto mt-5"
+        class=" mx-auto mt-5 "
         max-width="800"
         outlined
+         
         elevation="12"
         v-for="(service, index) in $store.state.serviceSuper[0]"
         :key="service.id"
@@ -38,6 +39,8 @@
         <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-title class="headline">
+             <v-row>
+               <v-col>
               <v-text-field
                 v-model="service.am"
                 label="Service Name"
@@ -45,10 +48,30 @@
                 rounded
                 dense
                 v-on:blur="update(service)"
-              ></v-text-field>
+              ></v-text-field></v-col>
+                <v-col sm="2">
+               <v-select 
+          v-model="service.od"
+          :items="permiss"
+          menu-props="auto"
+          hide-details
+          label="Select"
+          single-line
+          v-on:change="update(service)"
+        ></v-select>
+        </v-col>
+      </v-row>
             </v-list-item-title>
             <v-list-item-subtitle class="mb-3">
+             <v-row>
+                <v-col>
               Author : {{ service.fh }}
+              </v-col>
+              <v-col sm="1">
+                    <v-icon v-if="service.od == `public`">mdi-earth</v-icon>
+          <v-icon v-else>mdi-lock</v-icon>
+                </v-col>
+              </v-row>
             </v-list-item-subtitle>
             <v-divider></v-divider>
             <v-list-item-content>
@@ -125,7 +148,7 @@
               <v-expansion-panel-header color="deep-purple" id="DeUser"
                 >Details</v-expansion-panel-header
               >
-              <v-expansion-panel-content class="mt-5">
+              <v-expansion-panel-content class=" mt-5">
                 <v-form
                   v-for="(parameter, index) in service.oa"
                   :key="`paramName-${index}`"
@@ -139,7 +162,7 @@
                         v-on:blur="service"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="3" sm="3">
+                    <v-col cols="4" sm="3">
                       <v-select
                         v-model="parameter.oy"
                         :items="paramType"
@@ -243,6 +266,14 @@ export default {
     dialog: {},
     loading: false,
     loading4: false,
+     permiss: [
+      {
+        value: 'public', text: 'Public'
+      },
+      {
+        value: 'private', text: 'Private'
+      }
+    ]
   }),
   mounted() {
     let params = {
@@ -365,10 +396,7 @@ export default {
   color: white;
 }
 
-.v-btn--fab.v-size--small.v-btn--absolute.v-btn--bottom {
-  bottom: 45%;
-  right: -20px;
-}
+
 /* .v-card {
     position: relative;
 }

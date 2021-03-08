@@ -36,6 +36,8 @@
         <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-title class="headline">
+              <v-row>
+                <v-col>
               <v-text-field
                 v-model="service.am"
                 label="Service Name"
@@ -44,9 +46,33 @@
                 dense
                 v-on:blur="update(service)"
               ></v-text-field>
+              </v-col>
+              <v-col sm="2">
+               <v-select 
+          v-model="service.od"
+          :items="permiss"
+          menu-props="auto"
+          hide-details
+          label="Select"
+          single-line
+          v-on:change="update(service)"
+        ></v-select>
+
+         
+        </v-col>
+      
+        </v-row>
             </v-list-item-title>
             <v-list-item-subtitle class="mb-3">
+              <v-row>
+                <v-col>
               Author : {{ service.fh }}
+              </v-col>
+              <v-col sm="1">
+                    <v-icon v-if="service.od == `public`">mdi-earth</v-icon>
+          <v-icon v-else>mdi-lock</v-icon>
+                </v-col>
+              </v-row>
             </v-list-item-subtitle>
             <v-divider></v-divider>
             <v-list-item-content>
@@ -239,6 +265,14 @@ export default {
     ],
     dialog: {},
     loading4: false,
+    permiss: [
+      {
+        value: 'public', text: 'Public'
+      },
+      {
+        value: 'private', text: 'Private'
+      }
+    ]
   }),
   mounted() {
     let params = {
@@ -323,7 +357,7 @@ export default {
       const l = this.loader;
       this[l] = !this[l];
 
-      setTimeout(() => (this[l] = false), 3000);
+      setTimeout(() => (this[l] = false), 1500);
 
       this.loader = null;
     },

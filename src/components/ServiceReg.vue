@@ -66,7 +66,7 @@
                   label="Parameter Name"
                 ></v-text-field>
               </v-col>
-              <v-col cols="3" md="3">
+              <v-col cols="4" md="3">
                 <v-select
                   v-model="input.paramT"
                   :items="Titems"

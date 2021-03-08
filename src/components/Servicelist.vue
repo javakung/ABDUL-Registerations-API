@@ -38,7 +38,16 @@
         <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-title class="headline mb-1">
-              {{ service.am }}
+             
+                <v-row>
+                  <v-col>
+                    {{ service.am }}
+                  </v-col>
+                  <v-col align-end sm="1">
+                    <v-icon right> mdi-earth </v-icon>
+                  </v-col>
+                </v-row>
+      
             </v-list-item-title>
             <v-list-item-subtitle class="mb-3">
               {{ service.fh }}
@@ -206,7 +215,7 @@ export default {
       const l = this.loader;
       this[l] = !this[l];
 
-      setTimeout(() => (this[l] = false), 3000);
+      setTimeout(() => (this[l] = false), 1500);
 
       this.loader = null;
     },
