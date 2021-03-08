@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="deep-purple" dark>
-      <v-toolbar-title><p>ABDUL Registerations API</p></v-toolbar-title>
+      <v-toolbar-title><p>ABDUL Registrations API</p></v-toolbar-title>
 
       <v-spacer></v-spacer>
       

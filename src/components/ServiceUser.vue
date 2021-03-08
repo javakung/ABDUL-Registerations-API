@@ -1,24 +1,22 @@
 <template>
   <v-container>
-   
-    
-      <v-container>
-        <v-row>
-          <v-col>
-            <h1>My API</h1>
-          </v-col>
-          <v-col align-end sm="3" class="mt-5">
-            <v-select
-              :items="sorts"
-              v-model="Filter"
-              label="Sort"
-              light
-              v-on:change="showService"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </v-container>
-       <div class="text-center" v-if="$store.state.Myloading">
+    <v-container>
+      <v-row>
+        <v-col>
+          <h1>My API</h1>
+        </v-col>
+        <v-col align-end sm="3" class="mt-5">
+          <v-select
+            :items="sorts"
+            v-model="Filter"
+            label="Sort"
+            light
+            v-on:change="showService"
+          ></v-select>
+        </v-col>
+      </v-row>
+    </v-container>
+    <div class="text-center" v-if="$store.state.Myloading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -32,7 +30,7 @@
         max-width="800"
         outlined
         elevation="12"
-        v-for="(service,index) in $store.state.serviceUser[0]"
+        v-for="(service, index) in $store.state.serviceUser[0]"
         :key="service.id"
       >
         <v-list-item three-line>
@@ -44,7 +42,7 @@
                 filled
                 rounded
                 dense
-                 v-on:blur="update(service)"
+                v-on:blur="update(service)"
               ></v-text-field>
             </v-list-item-title>
             <v-list-item-subtitle class="mb-3">
@@ -58,11 +56,66 @@
                 clear-icon="mdi-close-circle"
                 label="Description"
                 value="This is clearable text."
-                 v-on:blur="update(service)"
+                v-on:blur="update(service)"
               ></v-textarea>
             </v-list-item-content>
           </v-list-item-content>
         </v-list-item>
+        <v-card-actions>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="service.wo"
+                label="Endpoint"
+                filled
+                rounded
+                dense
+                v-on:blur="update(service)"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-btn
+                class="ma-2"
+                :loading="loading4"
+                :disabled="loading4"
+                color="info"
+                v-on:click="checkConnection(service), (loader = 'loading4')"
+              >
+                Test Connection
+                <template v-slot:loader>
+                  <span class="custom-loader">
+                    <v-icon light>mdi-cached</v-icon>
+                  </span>
+                </template>
+              </v-btn>
+              <v-chip
+                v-if="
+                  $store.state.urlval.status == `valid` &&
+                    $store.state.urlval.sid == service.ao
+                "
+                class="ma-2"
+                color="green"
+                outlined
+              >
+                Connected
+              </v-chip>
+              <v-chip
+                v-else-if="
+                  $store.state.urlval.status == `invalid` &&
+                    $store.state.urlval.sid == service.ao
+                "
+                class="ma-2"
+                color="red"
+                outlined
+              >
+                Failed
+              </v-chip>
+              <v-chip v-else class="ma-2">
+                Connection Status
+              </v-chip>
+            </v-col>
+          </v-row>
+        </v-card-actions>
         <v-card-actions>
           <v-expansion-panels accordion>
             <v-expansion-panel class="mb-5">
@@ -108,53 +161,52 @@
           </v-expansion-panels>
 
           <v-fab-transition>
-             <v-dialog
-      v-model="dialog[index]"   :retain-focus="false"
-      
-      max-width="290"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-              color="pink"
-              fab
-              dark
-              small
-              absolute
-              bottom
-              right
-             v-bind="attrs"
-          v-on="on"
+            <v-dialog
+              v-model="dialog[index]"
+              :retain-focus="false"
+              max-width="290"
             >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-       
-      </template>
-      <v-card>
-        <v-card-title class="headline">
-        Are your sure to delete This service ?
-        </v-card-title>
-        <v-card-text> <h-1>{{service.am}}</h-1> </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            v-on:click="dialog[index] = false"
-     
-          >
-            No
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            v-on:click="deleteitem(service),dialog[index] = false"
-           
-          >
-            Yes
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="pink"
+                  fab
+                  dark
+                  small
+                  absolute
+                  bottom
+                  right
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title class="headline">
+                  Are your sure to delete This service ?
+                </v-card-title>
+                <v-card-text>
+                  <h-1>{{ service.am }}</h-1>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    v-on:click="dialog[index] = false"
+                  >
+                    No
+                  </v-btn>
+                  <v-btn
+                    color="green darken-1"
+                    text
+                    v-on:click="deleteitem(service), (dialog[index] = false)"
+                  >
+                    Yes
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-fab-transition>
         </v-card-actions>
       </v-card>
@@ -162,7 +214,7 @@
       <v-pagination
         class="mt-5"
         v-model="page"
-        :length="($store.state.lengthPageU / 10) + 1"
+        :length="$store.state.lengthPageU / 10 + 1"
         :total-visible="10"
         circle
       ></v-pagination>
@@ -185,7 +237,8 @@ export default {
       { value: "Str", text: "Str" },
       { value: "Any", text: "Any" },
     ],
-    dialog: {}
+    dialog: {},
+    loading4: false,
   }),
   mounted() {
     let params = {
@@ -242,18 +295,16 @@ export default {
       };
       this.$store.dispatch("updateService", payload);
     },
-    checkurl(service) {
-      this.busy = true;
-
+    checkConnection(service) {
       let payload = {
         url: service.wo,
         sid: service.ao,
       };
-
-      this.$store.dispatch("Uralvalidate", payload).then(
-        this.setTimeout(() => {
-          this.busy = false;
-        })
+      this.$store.dispatch("urlValidate", payload).then(
+        (this.loading4 = true),
+        setTimeout(() => {
+          this.loading4 = false;
+        }, 2500)
       );
     },
   },
@@ -268,6 +319,14 @@ export default {
         this.$store.dispatch("getServiceUser", params);
       }
     },
+      loader() {
+      const l = this.loader;
+      this[l] = !this[l];
+
+      setTimeout(() => (this[l] = false), 3000);
+
+      this.loader = null;
+    },
   },
 };
 </script>
@@ -281,7 +340,7 @@ export default {
   bottom: 45%;
   right: -20px;
 }
-.v-pagination__item.v-pagination__item{
+.v-pagination__item.v-pagination__item {
   outline: none;
 }
 </style>

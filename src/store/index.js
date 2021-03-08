@@ -1,9 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import axios from 'axios'
+import Vue from "vue";
+import Vuex from "vuex";
+import axios from "axios";
 
-
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -21,7 +20,8 @@ export default new Vuex.Store({
     deleteSuper: {},
     updateSuper: {},
     lengthPageP: [],
-    lengthPageU: []
+    lengthPageU: [],
+    urlval: "",
   },
   mutations: {
     SET_USER(state, Login) {
@@ -49,17 +49,20 @@ export default new Vuex.Store({
       state.lengthpage = number;
     },
     SET_LENGTHPAGEP(state, number) {
-      state.lengthPageP = number
+      state.lengthPageP = number;
     },
     SET_LENGTHPAGEU(state, number) {
-      state.lengthPageU = number
+      state.lengthPageU = number;
     },
     SET_DELETESUPER(state, request) {
-      state.deleteSuper = request
+      state.deleteSuper = request;
     },
     SET_UPDATESUPER(state, request) {
-      state.updateSuper = request
-    }
+      state.updateSuper = request;
+    },
+    SET_URLVAL(state, val) {
+      state.urlval = val;
+    },
   },
   actions: {
     getLogin({ commit }, payload) {
@@ -105,7 +108,7 @@ export default new Vuex.Store({
         })
         .then((res) => {
           commit("SET_SERVICEUSER", res.data);
-          commit("SET_LENGTHPAGEU",res.data[1].total);
+          commit("SET_LENGTHPAGEU", res.data[1].total);
           this.state.Myloading = false;
         });
     },
@@ -137,7 +140,6 @@ export default new Vuex.Store({
         });
     },
     serviceSuper({ commit }, params) {
-
       axios
         .get(
           "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins",
@@ -147,31 +149,42 @@ export default new Vuex.Store({
           commit("SET_SERVICESUPER", res.data[0]);
           var fetch = res.data[0];
           commit("SET_LENGTHPAGE", fetch[1].total);
-     
         });
     },
     serviceDeleteS({ commit }, payload) {
-      commit("SET_DELETESUPER", payload)
+      commit("SET_DELETESUPER", payload);
       axios.delete(
         "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins/service/delete",
         {
           data: {
             sid: this.state.deleteSuper.sid,
             u: this.state.deleteSuper.u,
-            status: this.state.deleteSuper.status
+            status: this.state.deleteSuper.status,
           },
         }
       );
     },
     serviceUpdateS({ commit }, payload) {
-      commit("SET_UPDATESUPER",payload);
-      axios.patch(
-        "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins/service/update"
-        , this.state.updateSuper).then(res =>{
-                                               console.log(res.data);
-                                             }
-      )
-    }
+      commit("SET_UPDATESUPER", payload);
+      axios
+        .patch(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins/service/update",
+          this.state.updateSuper
+        )
+        .then((res) => {
+          console.log(res.data);
+        });
+    },
+    urlValidate({ commit }, payload) {
+      axios
+        .post(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/urlval",
+          payload
+        )
+        .then((res) => {
+          commit("SET_URLVAL", res.data[1]);
+        });
+    },
   },
   modules: {},
 });
