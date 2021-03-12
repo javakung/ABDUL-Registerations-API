@@ -6,14 +6,46 @@
           <v-col class="mt-5">
             <h1>Public API</h1>
           </v-col>
-          <v-col align-end sm="3" class="mt-5">
-            <v-select
-              :items="sorts"
+          <p class="text-uppercase mt-3">filter</p>
+          <v-col align-end sm="1">
+           <v-radio-group
               v-model="Sort"
-              label="Sort"
+                 row
+            >
+            <v-radio
+                label="Latest"
+                color="red"
+                :value='-1'
+                dark
+              ></v-radio>
+                <v-radio
+                label="Oldest"
+                color="red"
+                :value='1'
+                dark
+              ></v-radio>
+           </v-radio-group>
+           </v-col>
+          <v-col align-end sm="1" class="mt-3">
+              <v-checkbox
+              v-model="ex4"
+              label="Public"
+              color="green"
+              value="public"
+              hide-details
               dark
-              v-on:change="showService"
-            ></v-select>
+            ></v-checkbox>
+              
+          </v-col>
+           <v-col align-end sm="3" class="mt-3">
+            <v-checkbox
+              v-model="ex4"
+              label="Private"
+              color="red"
+              value="private"
+              hide-details
+              dark
+            ></v-checkbox>
           </v-col>
         </v-row>
       </v-container>

@@ -285,8 +285,8 @@ export default {
     } else {
       setTimeout(() => {
         this.$store.dispatch("getServiceUser", params);
-        this.show = false;
-      }, 1000);
+       
+      }, 3000);
     }
   },
   methods: {
@@ -304,7 +304,7 @@ export default {
       this.$store.dispatch("deleteService", payload).then(
         setTimeout(() => {
           this.$store.dispatch("getServiceUser", params);
-          this.show = false;
+       
         }, 3000)
       );
     },

@@ -245,10 +245,8 @@ export default {
       this.$store
         .dispatch("postService", payload)
         .then(
-          (this.$store.state.Myloading = true),
           setTimeout(() => {
             this.$store.dispatch("serviceUser", params);
-            this.$store.state.Myloading = false;
           }, 3000)
         )
         .then(
