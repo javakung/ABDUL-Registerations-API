@@ -245,9 +245,7 @@ export default {
       this.$store
         .dispatch("postService", payload)
         .then(
-          setTimeout(() => {
-            this.$store.dispatch("serviceUser", params);
-          }, 3000)
+            this.$store.dispatch("getServiceUser", params)
         )
         .then(
           setTimeout(() => {
