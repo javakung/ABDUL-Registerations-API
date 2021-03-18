@@ -22,6 +22,7 @@ export default new Vuex.Store({
     lengthPageP: [],
     lengthPageU: [],
     urlval: "",
+    check: [],
   },
   mutations: {
     SET_USER(state, Login) {
@@ -63,6 +64,9 @@ export default new Vuex.Store({
     SET_URLVAL(state, val) {
       state.urlval = val;
     },
+    CHECK_STATE(state, data) {
+      state.check = data;
+    },
   },
   actions: {
     getLogin({ commit }, payload) {
@@ -101,15 +105,15 @@ export default new Vuex.Store({
         });
     },
     getServiceUser({ commit }, params) {
-      this.state.Myloading = true;
+      // this.state.Myloading = true;
       axios
-        .get("https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/user", {
+        .get("http://165.232.169.18/v1/APIs/user", {
           params,
         })
         .then((res) => {
           commit("SET_SERVICEUSER", res.data);
           commit("SET_LENGTHPAGEU", res.data[1].total);
-          this.state.Myloading = false;
+          // this.state.Myloading = false;
         });
     },
     deleteService({ commit }, payload) {
@@ -130,24 +134,23 @@ export default new Vuex.Store({
     },
     updateService({ commit }, payload) {
       commit("SET_UPDATEREQUEST", payload);
-      this.state.Myloading = true
+      this.state.Myloading = true;
       axios
         .patch(
           "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/service/update",
           this.state.updateRequest
         )
         .then((res) => {
-          console.log(res.data)
+          console.log(res.data);
           setTimeout(() => {
-          this.state.Myloading = false;  
+            this.state.Myloading = false;
           }, 3000);
-          
         });
     },
     serviceSuper({ commit }, params) {
       axios
         .get(
-          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins",
+          "https://fastpymongo.herokuapp.com/v1/api/service/superuser/list",
           { params }
         )
         .then((res) => {
@@ -190,6 +193,9 @@ export default new Vuex.Store({
           commit("SET_URLVAL", res.data[1]);
         });
     },
+    // Check({ commit }, params) {
+    //   commit("CHECK_STATE",{params})
+    // },
   },
   modules: {},
 });

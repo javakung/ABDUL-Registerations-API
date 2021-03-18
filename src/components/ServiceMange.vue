@@ -6,14 +6,46 @@
           <v-col class="mt-5">
             <h1>ManageAPI</h1>
           </v-col>
-          <v-col align-end sm="3" class="mt-5">
-            <v-select
-              :items="sorts"
+         <p class="text-uppercase mt-3">filter</p>
+          <v-col align-end sm="1">
+           <v-radio-group
               v-model="Filter"
-              label="Sort"
+                 row
+            >
+            <v-radio
+                label="Latest"
+                color="red"
+                :value='-1'
+                dark
+              ></v-radio>
+                <v-radio
+                label="Oldest"
+                color="red"
+                :value='1'
+                dark
+              ></v-radio>
+           </v-radio-group>
+           </v-col>
+          <v-col align-end sm="1" class="mt-3">
+              <v-checkbox
+              v-model="Spu"
+              label="Public"
+              color="green"
+              :value="1"
+              hide-details
               dark
-              v-on:change="showService"
-            ></v-select>
+            ></v-checkbox>
+              
+          </v-col>
+           <v-col align-end sm="1" class="mt-3">
+            <v-checkbox
+              v-model="Spr"
+              label="Private"
+              color="red"
+              :value="1"
+              hide-details
+              dark
+            ></v-checkbox>
           </v-col>
         </v-row>
       </v-container>
@@ -31,7 +63,7 @@
         class=" mx-auto mt-5 "
         max-width="800"
         outlined
-         
+         id="ManageCard"
         elevation="12"
         v-for="(service, index) in $store.state.serviceSuper[0]"
         :key="service.id"
@@ -273,28 +305,25 @@ export default {
       {
         value: 'private', text: 'Private'
       }
-    ]
+    ],
+    Spu: 0,
+    Spr: 0
   }),
   mounted() {
-    let params = {
-      page: this.page,
-      user_id: this.$store.state.user.yo,
-      sort: this.Filter,
-      status: this.$store.state.user.ar,
-    };
-    if (this.$store.state.user.yo) {
-      this.$store.dispatch("serviceSuper", params).then(
-        (this.loading = true),
-        setTimeout(() => {
-          this.loading = false;
-        }, 3000)
-      );
-    } else {
-      setTimeout(() => {
-        this.$store.dispatch("serviceSuper", params);
-        this.loading = false;
-      }, 1000);
-    }
+    // let params = {
+    //   page: this.page,
+    //   user_id: this.$store.state.user.yo,
+    //   sort: this.Filter,
+    //   status: this.$store.state.user.ar,
+    // };
+    // if (this.permiss == `public`) {
+    //   this.$store.dispatch("serviceSuper", params).then(
+    //     (this.loading = true),
+    //     setTimeout(() => {
+    //       this.loading = false;
+    //     }, 3000)
+    //   );
+    // } 
   },
   methods: {
     deleteitem(service) {
@@ -387,7 +416,71 @@ export default {
 
       this.loader = null;
     },
+    Spu: function(val) {
+      let params = {
+      page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: this.Spr,
+      
+      }
+      if (val != null) {
+      this.$store.dispatch("serviceSuper", params).then(
+        (this.loading = true),
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000)
+      )
+     
+    }else{
+      let params ={
+         page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: 0,
+      private: this.Spr,
+    
+      }
+       this.$store.dispatch("serviceSuper", params)
+    }
+    
   },
+  Spr: function(val) {
+      let params = {
+      page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: this.Spr,
+   
+      }
+      if (val != null) {
+      this.$store.dispatch("serviceSuper", params).then(
+        (this.loading = true),
+        setTimeout(() => {
+          this.loading = false;
+        }, 3000)
+      )
+     
+    }else{
+      let params ={
+         page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: 0,
+     
+      }
+       this.$store.dispatch("serviceSuper", params)
+    }
+    
+  }
+    }
 };
 </script>
 

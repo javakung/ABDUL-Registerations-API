@@ -7,7 +7,7 @@
             <h1>Public API</h1>
           </v-col>
           <p class="text-uppercase mt-3">filter</p>
-          <v-col align-end sm="1">
+          <v-col align-end sm="2">
            <v-radio-group
               v-model="Sort"
                  row
@@ -26,27 +26,7 @@
               ></v-radio>
            </v-radio-group>
            </v-col>
-          <v-col align-end sm="1" class="mt-3">
-              <v-checkbox
-              v-model="ex4"
-              label="Public"
-              color="green"
-              value="public"
-              hide-details
-              dark
-            ></v-checkbox>
-              
-          </v-col>
-           <v-col align-end sm="3" class="mt-3">
-            <v-checkbox
-              v-model="ex4"
-              label="Private"
-              color="red"
-              value="private"
-              hide-details
-              dark
-            ></v-checkbox>
-          </v-col>
+        
         </v-row>
       </v-container>
     </v-parallax>

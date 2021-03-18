@@ -5,18 +5,57 @@
         <v-col>
           <h1>My API</h1>
         </v-col>
-        <v-col align-end sm="3" class="mt-5">
-          <v-select
-            :items="sorts"
-            v-model="Filter"
-            label="Sort"
-            light
-            v-on:change="showService"
-          ></v-select>
+       
+        <v-col sm="5" class="mt-5">
+           <v-row>
+        <p class="text-uppercase mt-3">filter</p>
+          <v-col  sm="3">
+           <v-radio-group
+              v-model="Filter"
+                 row
+              v-on:change="showService"
+            >
+            <v-radio
+                label="Latest"
+                color="red"
+                :value='-1'
+                light
+              ></v-radio>
+                <v-radio
+                label="Oldest"
+                color="red"
+                :value='1'
+                light
+              ></v-radio>
+           </v-radio-group>
+           </v-col>
+          <v-col  sm="2" class="mt-3">
+              <v-checkbox
+              v-model="Spu"
+              label="Public"
+              color="green"
+              :value="1"
+              hide-details
+              light
+            ></v-checkbox>
+              
+          </v-col>
+           <v-col  sm="3" class="mt-3">
+            <v-checkbox
+              v-model="Spr"
+              label="Private"
+              color="red"
+              :value="1"
+              hide-details
+              light
+            ></v-checkbox>
+          </v-col>
+          </v-row>
         </v-col>
+        
       </v-row>
     </v-container>
-    <div class="text-center" v-if="$store.state.Myloading">
+    <div class="text-center" v-if="loading4">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -212,7 +251,7 @@
                   Are your sure to delete This service ?
                 </v-card-title>
                 <v-card-text>
-                  <h-1>{{ service.am }}</h-1>
+                  <h-1></h-1>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -272,22 +311,23 @@ export default {
       {
         value: 'private', text: 'Private'
       }
-    ]
+    ],Spu: 0,
+    Spr:0
   }),
   mounted() {
-    let params = {
-      page: this.page,
-      user_id: this.$store.state.user.yo,
-      sort: this.Filter,
-    };
-    if (this.$store.state.user.yo) {
-      this.$store.dispatch("getServiceUser", params);
-    } else {
-      setTimeout(() => {
-        this.$store.dispatch("getServiceUser", params);
+    // let params = {
+    //   page: this.page,
+    //   user_id: this.$store.state.user.yo,
+    //   sort: this.Filter,
+    // };
+    // if (this.$store.state.user.yo) {
+    //   this.$store.dispatch("getServiceUser", params);
+    // } else {
+    //   setTimeout(() => {
+    //     this.$store.dispatch("getServiceUser", params);
        
-      }, 3000);
-    }
+    //   }, 3000);
+    // }
   },
   methods: {
     deleteitem(service) {
@@ -361,6 +401,71 @@ export default {
 
       this.loader = null;
     },
+    Spr: function(val) {
+      
+      let params = {
+      page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: this.Spr
+      
+      }
+      if (val != null) {
+      this.$store.dispatch("getServiceUser", params).then(
+        (this.loading4 = true),
+        setTimeout(() => {
+          this.loading4 = false;
+        }, 3000)
+      )
+     
+    }else{
+      let params ={
+         page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: 0
+      }
+       this.$store.dispatch("getServiceUser", params)
+    }
+    
+  },
+  Spu: function(val) {
+      let params = {
+      page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: this.Spr,
+    
+      
+      }
+      if (val != null) {
+      this.$store.dispatch("getServiceUser", params).then(
+        (this.loading4 = true),
+        setTimeout(() => {
+          this.loading4 = false;
+        }, 3000)
+      )
+     
+    }else{
+      let params ={
+         page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: 0,
+      private: this.Spr,
+
+      }
+       this.$store.dispatch("getServiceUser", params)
+    }
+    
+  }
   },
 };
 </script>
