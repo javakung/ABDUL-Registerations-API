@@ -64,7 +64,11 @@
       ></v-progress-circular>
     </div>
     <div v-else>
+      <div v-if="$store.state.serviceUser == `not found`">
+
+      </div>
       <v-card
+      v-else
         class="mx-auto mt-5 "
         max-width="800"
         outlined
@@ -311,8 +315,9 @@ export default {
       {
         value: 'private', text: 'Private'
       }
-    ],Spu: 0,
-    Spr:0
+    ],
+    Spu: 0,
+    Spr: 0
   }),
   mounted() {
     // let params = {
@@ -407,12 +412,11 @@ export default {
       page: this.page,
       user_id: this.$store.state.user.yo,
       sort: this.Filter,
-      status: this.$store.state.user.ar,
       public: this.Spu,
       private: this.Spr
       
       }
-      if (val != null) {
+      if (val == 1) {
       this.$store.dispatch("getServiceUser", params).then(
         (this.loading4 = true),
         setTimeout(() => {
@@ -425,7 +429,6 @@ export default {
          page: this.page,
       user_id: this.$store.state.user.yo,
       sort: this.Filter,
-      status: this.$store.state.user.ar,
       public: this.Spu,
       private: 0
       }
@@ -444,13 +447,12 @@ export default {
       page: this.page,
       user_id: this.$store.state.user.yo,
       sort: this.Filter,
-      status: this.$store.state.user.ar,
       public: this.Spu,
       private: this.Spr,
     
       
       }
-      if (val != null) {
+      if (val == 1) {
       this.$store.dispatch("getServiceUser", params).then(
         (this.loading4 = true),
         setTimeout(() => {
@@ -463,7 +465,6 @@ export default {
          page: this.page,
       user_id: this.$store.state.user.yo,
       sort: this.Filter,
-      status: this.$store.state.user.ar,
       public: 0,
       private: this.Spr,
 
