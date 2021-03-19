@@ -417,7 +417,7 @@ export default {
         (this.loading4 = true),
         setTimeout(() => {
           this.loading4 = false;
-        }, 3000)
+        }, 4500)
       )
      
     }else{
@@ -429,7 +429,13 @@ export default {
       public: this.Spu,
       private: 0
       }
-       this.$store.dispatch("getServiceUser", params)
+       this.$store.dispatch("getServiceUser", params).then(
+         this.loading4 = true
+       ).then(
+         setTimeout(() => {
+           this.loading4 = false
+         }, 4500)
+       )
     }
     
   },
@@ -449,7 +455,7 @@ export default {
         (this.loading4 = true),
         setTimeout(() => {
           this.loading4 = false;
-        }, 3000)
+        }, 4500)
       )
      
     }else{
@@ -462,10 +468,34 @@ export default {
       private: this.Spr,
 
       }
-       this.$store.dispatch("getServiceUser", params)
+       this.$store.dispatch("getServiceUser", params).then(
+         this.loading4 = true
+       ).then(
+         setTimeout(() => {
+           this.loading4 = false
+         }, 4500)
+       )
     }
     
-  }
+  },
+   Filter: function(val){
+     let params = {
+        page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      public: this.Spu,
+      private: this.Spr
+     }
+     if(val != null){
+       this.$store.dispatch("getServiceUser", params).then(
+         this.loading4 = true
+       ).then(
+         setTimeout(() => {
+           this.loading4 = false
+         }, 4500)
+       )
+     }
+   }
   },
 };
 </script>

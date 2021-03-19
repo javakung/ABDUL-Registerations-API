@@ -431,7 +431,7 @@ export default {
         (this.loading = true),
         setTimeout(() => {
           this.loading = false;
-        }, 3000)
+        }, 4500)
       )
      
     }else{
@@ -463,7 +463,7 @@ export default {
         (this.loading = true),
         setTimeout(() => {
           this.loading = false;
-        }, 3000)
+        }, 4500)
       )
      
     }else{
@@ -479,7 +479,26 @@ export default {
        this.$store.dispatch("serviceSuper", params)
     }
     
-  }
+  },
+   Filter: function(val){
+     let params = {
+        page: this.page,
+      user_id: this.$store.state.user.yo,
+      sort: this.Filter,
+      status: this.$store.state.user.ar,
+      public: this.Spu,
+      private: this.Spr
+     }
+     if(val != null){
+       this.$store.dispatch("serviceSuper", params).then(
+         this.loading = true
+       ).then(
+         setTimeout(() => {
+            this.loading = false
+         }, 4500)
+       )
+     }
+   }
     }
 };
 </script>

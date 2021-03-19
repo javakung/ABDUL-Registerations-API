@@ -148,16 +148,11 @@ export default new Vuex.Store({
         });
     },
     serviceSuper({ commit }, params) {
-      axios
-        .get(
-          "https://fastpymongo.herokuapp.com/v1/api/service/superuser/list",
-          { params }
-        )
-        .then((res) => {
-          commit("SET_SERVICESUPER", res.data[0]);
-          var fetch = res.data[0];
-          commit("SET_LENGTHPAGE", fetch[1].total);
-        });
+      axios.get("http://165.232.169.18/v1/APIs/admins", { params }).then((res) => {
+        commit("SET_SERVICESUPER", res.data[0]);
+        var fetch = res.data[0];
+        commit("SET_LENGTHPAGE", fetch[1].total);
+      });
     },
     serviceDeleteS({ commit }, payload) {
       commit("SET_DELETESUPER", payload);

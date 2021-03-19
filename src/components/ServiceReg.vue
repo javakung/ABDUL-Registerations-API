@@ -231,6 +231,8 @@ export default {
         page: this.page,
         sort: this.Filter,
         user_id: this.$store.state.user.yo,
+        public: 1,
+        private: 1,
       };
 
       let payload = {

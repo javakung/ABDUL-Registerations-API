@@ -30,7 +30,7 @@
         </v-row>
       </v-container>
     </v-parallax>
-    <div class="text-center mt-15" v-if="$store.state.Publicloading">
+    <div class="text-center mt-15" v-if="loading4">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -186,11 +186,7 @@ export default {
     loading4: false,
   }),
   mounted() {
-    let params = {
-      page: this.page,
-      sort: this.Sort,
-    };
-    this.$store.dispatch("getService", params);
+    this.showService()
   },
   methods: {
     showService() {
@@ -198,7 +194,12 @@ export default {
         page: this.page,
         sort: this.Sort,
       };
-      this.$store.dispatch("getService", params);
+      this.loading4 = true
+      this.$store.dispatch("getService", params).then(
+        setTimeout(() => {
+          this.loading4 = false
+        }, 4500)
+      )
     },
     checkConnection(service) {
       let payload = {
@@ -232,6 +233,21 @@ export default {
 
       this.loader[index] = null;
     },
+    Sort: function(val){
+      let params = {
+        page: this.page,
+        sort: this.Sort,
+      };
+      if(val != null){
+      this.$store.dispatch("getService", params).then(
+        this.loading4 = true
+      ).then(
+        setTimeout(() => {
+          this.loading4 = false
+        }, 4500)
+      )
+      }
+    }
   },
 };
 </script>
