@@ -145,10 +145,10 @@
             <v-col>
               <v-btn
                 class="ma-2"
-                :loading="loading4"
-                :disabled="loading4"
+                :loading="loading3"
+                :disabled="loading3"
                 color="info"
-                v-on:click="checkConnection(service), (loader = 'loading4')"
+                v-on:click="checkConnection(service), (loader = 'loading3')"
               >
                 Test Connection
                 <template v-slot:loader>
@@ -308,6 +308,7 @@ export default {
     ],
     dialog: {},
     loading4: false,
+    loading3: false,
     permiss: [
       {
         value: 'public', text: 'Public'
@@ -380,9 +381,9 @@ export default {
         sid: service.ao,
       };
       this.$store.dispatch("urlValidate", payload).then(
-        (this.loading4 = true),
+        (this.loading3 = true),
         setTimeout(() => {
-          this.loading4 = false;
+          this.loading3 = false;
         }, 1000)
       );
     },
