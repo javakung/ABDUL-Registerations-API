@@ -107,7 +107,7 @@ export default new Vuex.Store({
     getServiceUser({ commit }, params) {
       // this.state.Myloading = true;
       axios
-        .get("http://165.232.169.18/v1/APIs/user", {
+        .get("https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/user", {
           params,
         })
         .then((res) => {
@@ -148,11 +148,16 @@ export default new Vuex.Store({
         });
     },
     serviceSuper({ commit }, params) {
-      axios.get("http://165.232.169.18/v1/APIs/admins", { params }).then((res) => {
-        commit("SET_SERVICESUPER", res.data[0]);
-        var fetch = res.data[0];
-        commit("SET_LENGTHPAGE", fetch[1].total);
-      });
+      axios
+        .get(
+          "https://res-tful-python-yyab9.ondigitalocean.app/v1/APIs/admins",
+          { params }
+        )
+        .then((res) => {
+          commit("SET_SERVICESUPER", res.data[0]);
+          var fetch = res.data[0];
+          commit("SET_LENGTHPAGE", fetch[1].total);
+        });
     },
     serviceDeleteS({ commit }, payload) {
       commit("SET_DELETESUPER", payload);

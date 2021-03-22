@@ -30,7 +30,7 @@
         </v-row>
       </v-container>
     </v-parallax>
-    <div class="text-center mt-15" v-if="loading4">
+    <div class="text-center mt-15" v-if="loading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -184,6 +184,7 @@ export default {
       { value: 1, text: "Oldest" },
     ],
     loading4: false,
+    loading:false
   }),
   mounted() {
     this.showService()
@@ -240,10 +241,10 @@ export default {
       };
       if(val != null){
       this.$store.dispatch("getService", params).then(
-        this.loading4 = true
+        this.loading = true
       ).then(
         setTimeout(() => {
-          this.loading4 = false
+          this.loading = false
         }, 4500)
       )
       }
